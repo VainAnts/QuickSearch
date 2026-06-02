@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QuickSearch - 配置</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🔍 QuickSearch</h1>
+      <p class="subtitle">快速搜索选中的文本</p>
+    </header>
+
+    <!-- 搜索引擎列表 -->
+    <section class="engine-section">
+      <div class="section-header">
+        <h2>搜索引擎</h2>
+        <button id="addEngineBtn" class="btn btn-primary" title="添加新搜索引擎">+ 添加引擎</button>
+      </div>
+
+      <div id="engineList" class="engine-list">
+        <!-- 动态渲染引擎列表 -->
+      </div>
+    </section>
+
+    <!-- 快捷键配置 -->
+    <section class="shortcut-section">
+      <div class="section-header">
+        <h2>⌨️ 快捷键配置</h2>
+      </div>
+
+      <div class="shortcut-config">
+        <div class="shortcut-item">
+          <label>默认引擎搜索</label>
+          <div class="shortcut-input-group">
+            <input type="text" id="defaultShortcut" class="shortcut-input" readonly placeholder="点击设置快捷键">
+            <button id="clearDefaultShortcut" class="btn btn-small" title="清除">✕</button>
+          </div>
+          <span class="shortcut-hint-text">用于搜索选中的文本</span>
+        </div>
+
+        <div class="shortcut-item">
+          <label>全引擎搜索</label>
+          <div class="shortcut-input-group">
+            <input type="text" id="allEnginesShortcut" class="shortcut-input" readonly placeholder="点击设置快捷键">
+            <button id="clearAllEnginesShortcut" class="btn btn-small" title="清除">✕</button>
+          </div>
+          <span class="shortcut-hint-text">同时使用所有引擎搜索</span>
+        </div>
+
+        <div id="shortcutStatus" class="shortcut-status"></div>
+      </div>
+
+      <p class="shortcut-info-note">💡 按下组合键即可设置，支持 Ctrl/Alt/Shift + 字母</p>
+    </section>
+
+    <!-- 使用说明 -->
+    <section class="help-section">
+      <h2>📖 使用说明</h2>
+      <ul>
+        <li>选中网页上的文本</li>
+        <li>右键点击，选择搜索引擎进行搜索</li>
+        <li>或使用快捷键 <kbd>Ctrl+Shift+S</kbd> 使用默认引擎搜索</li>
+      </ul>
+    </section>
+
+    <!-- 数据备份与同步 -->
+    <section class="backup-section">
+      <div class="section-header">
+        <h2>💾 数据备份与同步</h2>
+      </div>
+
+      <div class="backup-config">
+        <div class="backup-buttons">
+          <button id="exportConfigBtn" class="btn btn-secondary" title="导出配置到文件">
+            📤 导出配置
+          </button>
+          <button id="importConfigBtn" class="btn btn-secondary" title="从文件导入配置">
+            📥 导入配置
+          </button>
+        </div>
+    </section>
+
+    <!-- 状态提示 -->
+    <div id="statusBar" class="status-bar"></div>
+  </div>
+
+  <!-- 添加/编辑引擎弹窗 -->
+  <div id="engineModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modalTitle">添加搜索引擎</h2>
+        <button id="closeModalBtn" class="close-btn">&times;</button>
+      </div>
+
+      <form id="engineForm">
+        <input type="hidden" id="engineId">
+
+        <div class="form-group">
+          <label for="engineName">名称</label>
+          <input type="text" id="engineName" placeholder="例如：百度" required>
+        </div>
+
+        <div class="form-group">
+          <label for="engineUrl">搜索URL</label>
+          <input type="url" id="engineUrl" placeholder="https://www.baidu.com/s?wd=%s" required>
+          <p class="form-hint">使用 <code>%s</code> 表示搜索关键词</p>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" id="cancelBtn" class="btn btn-secondary">取消</button>
+          <button type="submit" class="btn btn-primary">保存</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 隐藏的文件输入框 -->
+  <input type="file" id="importFileInput" accept=".json" style="display: none;">
+
+  <script src="popup.js"></script>
+</body>
+</html>
