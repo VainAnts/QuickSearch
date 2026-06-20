@@ -491,8 +491,13 @@ function loadShortcuts() {
   chrome.storage.local.get(SHORTCUT_KEY, (result) => {
     const shortcuts = result[SHORTCUT_KEY] || {};
 
+    const helpShortcutEl = document.getElementById('helpDefaultShortcut');
+
     if (shortcuts.default) {
       defaultShortcutInput.value = shortcuts.default;
+      if (helpShortcutEl) helpShortcutEl.textContent = shortcuts.default;
+    } else {
+      if (helpShortcutEl) helpShortcutEl.textContent = '未设置';
     }
 
     if (shortcuts.allEngines) {
@@ -512,6 +517,8 @@ function clearShortcut(type) {
     chrome.storage.local.set({ [SHORTCUT_KEY]: shortcuts }, () => {
       if (type === 'default') {
         defaultShortcutInput.value = '';
+        const helpShortcutEl = document.getElementById('helpDefaultShortcut');
+        if (helpShortcutEl) helpShortcutEl.textContent = '未设置';
       } else {
         allEnginesShortcutInput.value = '';
       }

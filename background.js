@@ -268,15 +268,16 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 // 监听来自popup和content的消息
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'getSelection') {
-    // 从内容脚本获取选中文本
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       if (tabs[0]) {
         chrome.tabs.sendMessage(tabs[0].id, { action: 'getSelection' }, (response) => {
           sendResponse(response);
         });
-        return true; // 异步响应
+      } else {
+        sendResponse({ text: '' });
       }
     });
+    return true;
   }
 
   if (message.action === 'search') {
@@ -313,15 +314,12 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 
   if (message.action === 'updateShortcuts') {
-    // 通知所有内容脚本更新快捷键
     chrome.tabs.query({}, (tabs) => {
       tabs.forEach(tab => {
         chrome.tabs.sendMessage(tab.id, { action: 'updateShortcuts' });
       });
     });
   }
-
-  return true;
 });
 
 // 监听存储变化 - 仅在 API 可用时注册
